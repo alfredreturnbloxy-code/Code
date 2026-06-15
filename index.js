@@ -26,3 +26,26 @@ app.post("/username-found", async (req, res) => {
 client.login(process.env.BOT_TOKEN);
 
 app.listen(3000, () => console.log("API running on port 3000"));
+
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+
+  if (interaction.commandName === "kick") {
+    const user = interaction.options.getMember("user");
+
+    if (!user) return interaction.reply("User not found");
+
+    await user.kick();
+    interaction.reply("User kicked");
+  }
+
+  if (interaction.commandName === "ban") {
+    const user = interaction.options.getMember("user");
+
+    if (!user) return interaction.reply("User not found");
+
+    await user.ban();
+    interaction.reply("User banned");
+  }
+});
+
